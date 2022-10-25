@@ -1,0 +1,44 @@
+version: '3.10'
+
+services:
+  database:
+    image: "postgres"
+    restart: always
+    env_file:
+      - ./database/database.env 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/ 
+  
+  redis:
+    image: redis
+    restart: always
+  
+  worker:
+    restart: always
+    build: 
+      context: ./webapp
+    volumes: 
+      - ./webapp/media/pdf:/app/src/media/pdf
+    command: ['celery', '--workdir=./src', '-A', 'proj', 'worker' ]
+  
+  wkhtmltopdf:
+    image: "openlabs/docker-wkhtmltopdf-aas"
+    restart: always
+  
+  django:
+    build:
+      context: ./webapp
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    restart: always
+    volumes:
+      - ./webapp/media/pdf:/app/src/media/pdf
+    command: bash -c "python ./src/manage.py makemigrations && python ./src/manage.py migrate && python ./src/manage.py runserver 0.0.0.0:8000"
+
+  
+
+volumes:
+  postgres_data:
+
