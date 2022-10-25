@@ -28,7 +28,10 @@ def make_order_view(request):
                         order.append(v)
             if order != []:
                 printers = Printer.objects.all().filter(point_id = point)
-                check_id = int(Check.objects.latest('id').id) + 1
+                if len(Check.objects.all()) == 0:
+                    check_id = 1
+                else:
+                    check_id = int(Check.objects.latest('id').id) + 1
                 for printer in printers:
                     Check.objects.create(printer_id= printer, type= printer.check_type, order= order, status = 'new')
                     check = Check.objects.filter(status = 'new').latest('id')
