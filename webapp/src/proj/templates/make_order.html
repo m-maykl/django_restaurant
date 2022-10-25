@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link 
+     rel="stylesheet"
+     href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <style>
+        .i-am-centered {
+            margin: auto;
+            max-width: 400px;
+            padding-top: 10%;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Зробити замовлення</title>
+</head>
+<body>
+    <div class="i-am-centered">
+        <h1 class="center">Зробіть замовлення</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Оберіть заклад </label>
+                {{ form.point }}
+            </div>
+            <h4>Оберіть що замовити </h4>
+            <div class="form-group">
+                <label>Бургер </label>
+                {{ form.burger }}
+            </div>
+            <div class="form-group">
+                <label>Рол</label>
+                {{ form.roll }}
+            </div>
+            <div class="form-group">
+                <label>Салат</label>
+                {{ form.salad }}
+            </div>
+            <div class="form-group">
+                <label>Coca-Cola</label>
+                {{ form.coca_cola }}
+            </div>
+            <div class="form-group">
+                <label>Морозиво</label>
+                {{ form.ice_cream }}
+            </div>
+            <button type="submit" class="btn btn-primary">Замовити</button>
+        </form>
+    </div>
+</body>
+</html>
