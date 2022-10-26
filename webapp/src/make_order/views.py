@@ -28,14 +28,15 @@ def make_order_view(request):
                         order.append(v)
             if order != []:
                 printers = Printer.objects.all().filter(point_id = point)
-                if len(Check.objects.all()) == 0:
-                    check_id = 1
+                num_checks = len(Check.objects.all())
+                if num_checks == 0:
+                    order_id = 1
                 else:
-                    check_id = int(Check.objects.latest('id').id) + 1
+                    order_id = (num_checks / 2) + 1
                 for printer in printers:
                     Check.objects.create(printer_id= printer, type= printer.check_type, order= order, status = 'new')
                     check = Check.objects.filter(status = 'new').latest('id')
-                    write_html.delay({'id': check.id, 'point': points_list.get(point), 'order': order, 'order_num': check_id})
+                    write_html.delay({'id': check.id, 'point': points_list.get(point), 'order': order, 'order_num': order_id})
     return render(request, "make_order.html", context = {'form':form})
 
 
