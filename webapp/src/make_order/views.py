@@ -32,7 +32,7 @@ def make_order_view(request):
                 if num_checks == 0:
                     order_id = 1
                 else:
-                    order_id = (num_checks / 2) + 1
+                    order_id = int((num_checks / 2) + 1)
                 for printer in printers:
                     Check.objects.create(printer_id= printer, type= printer.check_type, order= order, status = 'new')
                     check = Check.objects.filter(status = 'new').latest('id')
